@@ -1,3 +1,4 @@
+:- dynamic woman/1.
 woman(alicia).
 woman(justine).
 woman(cecilia).
