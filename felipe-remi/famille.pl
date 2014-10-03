@@ -33,11 +33,6 @@ child(X,Y) :- parent(Y,X).
 % uncle(uncle,nephew).
 uncle(X,Y) :- parent(Z,Y), fraternity(Z,X), X \= Y.
 
-membre(X,[X|_]).
-membre(X,[_|L]) :- membre(X,L).
-append([ ], L1, L1).
-append([A|L1],L2,[A|L3]) :- append(L1,L2,L3).
-
 % ancester with trace (nice function)
 ancester(X,Y,R) :- ancester(X,Y,[X],R).
 
