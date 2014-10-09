@@ -12,5 +12,9 @@ extract([X|L],[T],N) :- extract(L,T,N).
 % Part 3 -----------------------
 % element(Pos, Element, List).
 
-element(1, X, [X|L]).
-element(P,E,[X|L]) :- P > 1, P1 is P - 1, element(P1,E,L).
+elements(1, X, [X|L]).
+elements(P,E,[X|L]) :- P1 is P - 1, element(P1,E,L).
+
+element(P, X, L) :- element(P,1,X,L).
+element(P,P,X,[X|L]).
+element(P,CP,X,[_|L]) :- NP is CP + 1, element(P,NP,X,L).
