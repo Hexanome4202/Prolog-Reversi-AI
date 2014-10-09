@@ -2,12 +2,10 @@
 member(X,[X|Q],Q).
 member(X,[T|L],[T|R]) :- member(X,L,R).
 
-extract(L,Extract) :- extract(L,Extract,2);
-
-extract(L,[],1).
-extract(L,T,1).
-extract([X|L],[X|T],N) :- N1 is N - 1, extract(L,T,N1).
-extract([X|L],[T],N) :- extract(L,T,N).
+extract(L,Extract) :- extract(L,Extract,[],2).
+extractFinal(Res).
+extract(L,Extract,Extract,0) :- reverse(Extract, Res), extractFinal(Res).
+extract(L,Extract,Res,N) :- member(X,L), member(X,L,L1), N1 is N-1, extract(L1,Extract,[X|Res], N1).
 
 % Part 3 -----------------------
 % element(Pos, Element, List).
