@@ -5,10 +5,20 @@ element(P,P,X,[X|L]).
 element(P,CP,X,[_|L]) :- NP is CP + 1, element(P,NP,X,L).
 
 % sublist --> creates a sublist of the list
-sublist(L,P,T,R) :- sublist(L,P,T,R,[]).
+sublist(List,Position,Size,Res) :- sublist(List,Position,Size,Res,[]).
 sublist(L,1,0,NewList,NewList).
 sublist([X|L],1,T,R,NewList) :- T1 is T - 1, sublist(L,1,T1,R,[X|NewList]).
 sublist([_|L],P,T,R,NewList) :- P1 is P - 1, sublist(L,P1,T,R,NewList).
+
+sublineRight(Board,Position, List) :- Modulo is Position mod 8, sublineRight(Board,Position,List,[], Modulo).
+sublineRight(Board,Position, List1, List, 0) :- reverse(List,List1).
+sublineRight(Board,Position,List, AList, Modulo) :- P1 is Position+1, M1 is P1 mod 8, element(P1,Element,Board), sublineRight(Board,P1,List,[Element|AList],M1).
+
+sublineLeft(Board,Position, List) :- Modulo is Position mod 8, sublineLeft(Board,Position,List,[], Modulo).
+sublineLeft(Board,Position, List, List, 1).
+sublineLeft(Board,Position,List, AList, Modulo) :- P1 is Position-1, M1 is P1 mod 8, element(P1,Element,Board), sublineLeft(Board,P1,List,[Element|AList],M1).
+
+
 
 % nextMove(X,Player,Move).
 nextMove(X,1,Move) :- possibleMoves(X,1,Moves,Move), ia1(X,Moves,Move).
