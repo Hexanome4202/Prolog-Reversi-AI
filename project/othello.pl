@@ -15,4 +15,4 @@ sizeOfList([],0).
 sizeOfList([_|T],N) :- sizeOfList(T,N1), N is N1+1.
 
 % randomIA(PossibleMoves, Move)
-randomIA(PossibleMoves, Move) :- sizeOfList(PossibleMoves, Size), Position is random(Size)+1, elementAt(Move,PossibleMoves,Position).
+randomIA(PossibleMoves, Move) :- sizeOfList(PossibleMoves, Size), Position is random(Size)+1, elementAt(MoveList,PossibleMoves,Position), elementAt(Move,MoveList,1).
