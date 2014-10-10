@@ -1,1 +1,1 @@
-Mastermind game using prolog
+Othello game using prolog
