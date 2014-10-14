@@ -1,5 +1,6 @@
-match(List, Player, Points) :- match(List, Player, Points, TempPoints).
+match(List, Player, Points) :- match2(List, Player, 0, Points).
 
-match([],  Player, TempPoints, TempPoints) :- TempPoints > 0.
-match([X|Y], X, Points, TempPoints) :- X>0, match([], Player, Points, TempPoints).
-match([X|Y], Player, Points, TempPoints) :- X>0, Player =\= X, TP is TempPoints +1, match(Y, Player, Points, TP).
+match2([],  Player, TempPoints, Points) :- Points is TempPoints, TempPoints > 0.
+match2([X|Y], Player, TempPoints, Points) :- X==0, Points is 0. 
+match2([X|Y], Player, TempPoints, Points) :- X==Player, Points is TempPoints, TempPoints > 0.
+match2([X|Y], Player, TempPoints, Points) :- X>0, X =\= Player, match2(Y, Player, TempPoints+1, Points).
