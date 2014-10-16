@@ -1,5 +1,6 @@
 :- include('init.pl').
 :- include('nextMove.pl').
+:- include('match.pl').
 
 play(Player,Winner) :-  win(Winner),!.
 play(Player,Winner) :- board(X), nextMove(X,Player,Move), update(X,Player,Move,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer).
@@ -25,3 +26,6 @@ win(Winner) :- possibleMoves1(X), X = [], possibleMoves2(Y), Y = [], board(Board
 count(Element, List, Counter) :- count(Element, List, Counter, 0).
 count(Element, [], Counter, Counter).
 count(Element, [Head|Tail], Counter, ACounter) :- (Element = Head -> C1 is ACounter+1 ; C1 is ACounter), count(Element,Tail,Counter,C1).
+
+%Test de subline avec match 
+%sublineRight([2,1,1,0,1,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],4,List), match(List, 2, Points).
