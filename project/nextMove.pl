@@ -19,7 +19,7 @@ sublist([_|L],P,T,R,NewList) :- P1 is P - 1, sublist(L,P1,T,R,NewList).
 %		Position 	-> the sub starting position
 %		List 		-> the resulting subline
 sublineRight(Board,Position, List) :- Modulo is Position mod 8, sublineRight(Board,Position,List,[], Modulo).
-sublineRight(Board,Position, List1, List, 0) :- reverse(List,List1).
+sublineRight(Board,Position, List1, List, 0) :- reverse(List,List1), !.
 sublineRight(Board,Position,List, AList, Modulo) :- P1 is Position+1, M1 is P1 mod 8, element(P1,Element,Board), sublineRight(Board,P1,List,[Element|AList],M1).
 
 % -----
@@ -30,9 +30,8 @@ sublineRight(Board,Position,List, AList, Modulo) :- P1 is Position+1, M1 is P1 m
 %		Position 	-> the sub starting position
 %		List 		-> the resulting subline
 sublineLeft(Board,Position, List) :- Modulo is Position mod 8, sublineLeft(Board,Position,List,[], Modulo).
-sublineLeft(Board,Position, List, List, 1).
+sublineLeft(Board,Position, List1, List, 1) :- reverse(List,List1), !.
 sublineLeft(Board,Position,List, AList, Modulo) :- P1 is Position-1, M1 is P1 mod 8, element(P1,Element,Board), sublineLeft(Board,P1,List,[Element|AList],M1).
-
 
 % -----
 % nextMove(X,Player,Move).
