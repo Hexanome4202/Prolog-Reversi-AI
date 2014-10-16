@@ -106,11 +106,11 @@ subdiagUpRight(Board,Position,List, AList, M, M1) :- M3 is M1, P1 is Position-7,
 %		Board 		-> the game Board
 %		Position 	-> the sub starting position
 %		List 		-> the resulting subline
-subdiagDownRight((Board,Position, List) :- P1 is Position-7, Modulo is Position mod 8, ModuloNext is P1 mod 8, subdiagDownRight((Board,P1,List,[],Modulo,ModuloNext).
-subdiagDownRight((Board,Position, List1, List, M, M1) :- Position =< 0, reverse(List,List1), !.
-subdiagDownRight((Board,Position, List1, List, M, M1) :- M =\= M1-1, M1=\=0, reverse(List,List1), !.
-subdiagDownRight((Board,Position, List1, List, M, M1) :- M1 == 1, reverse(List,List1), !.
-subdiagDownRight((Board,Position,List, AList, M, M1) :- M3 is M1, P1 is Position-7, M4 is P1 mod 8, element(Position,Element,Board), subdiagDownRight((Board,P1,List,[Element|AList],M3,M4).
+subdiagDownRight(Board,Position, List) :- P1 is Position+9, Modulo is Position mod 8, ModuloNext is P1 mod 8, subdiagDownRight(Board,P1,List,[],Modulo,ModuloNext).
+subdiagDownRight(Board,Position, List1, List, M, M1) :- Position > 24, reverse(List,List1), !.
+subdiagDownRight(Board,Position, List1, List, M, M1) :- M =\= M1-1, M1=\=0, reverse(List,List1), !.
+subdiagDownRight(Board,Position, List1, List, M, M1) :- M1 == 1, reverse(List,List1), !.
+subdiagDownRight(Board,Position,List, AList, M, M1) :- M3 is M1, P1 is Position+9, M4 is P1 mod 8, element(Position,Element,Board), subdiagDownRight(Board,P1,List,[Element|AList],M3,M4).
 
 
 
