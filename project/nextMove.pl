@@ -15,7 +15,7 @@ sublist([_|L],P,T,R,NewList) :- P1 is P - 1, sublist(L,P1,T,R,NewList).
 % sublineRight(Board,Position,List).
 %	Computes the right subline
 %	Parameters :
-%		X 			-> the game Board
+%		Board		-> the game Board
 %		Position 	-> the sub starting position
 %		List 		-> the resulting subline
 sublineRight(Board,Position, List) :- Modulo is Position mod 8, sublineRight(Board,Position,List,[], Modulo).
@@ -26,12 +26,36 @@ sublineRight(Board,Position,List, AList, Modulo) :- P1 is Position+1, M1 is P1 m
 % sublineLeft(Board,Position,List).
 %	Computes the left subline
 %	Parameters :
-%		X 			-> the game Board
+%		Board		-> the game Board
 %		Position 	-> the sub starting position
 %		List 		-> the resulting subline
 sublineLeft(Board,Position, List) :- Modulo is Position mod 8, sublineLeft(Board,Position,List,[], Modulo).
 sublineLeft(Board,Position, List1, List, 1) :- reverse(List,List1), !.
 sublineLeft(Board,Position,List, AList, Modulo) :- P1 is Position-1, M1 is P1 mod 8, element(P1,Element,Board), sublineLeft(Board,P1,List,[Element|AList],M1).
+
+
+% -----
+% subrowUp(Board,Position,List).
+%	Computes the left subline
+%	Parameters :
+%		Board 		-> the game Board
+%		Position 	-> the sub starting position
+%		List 		-> the resulting subline
+subrowUp(Board,Position, List) :- P1 is Position-8, subrowUp(Board,P1,List,[]).
+subrowUp(Board,Position, List1, List) :- Position =< 0, reverse(List,List1), !.
+subrowUp(Board,Position,List, AList) :- P1 is Position-8, element(Position,Element,Board), subrowUp(Board,P1,List,[Element|AList]).
+
+% -----
+% subrowDown(Board,Position,List).
+%	Computes the left subline
+%	Parameters :
+%		Board 		-> the game Board
+%		Position 	-> the sub starting position
+%		List 		-> the resulting subline
+subrowDown(Board,Position, List) :- P1 is Position+8, subrowDown(Board,P1,List,[]).
+subrowDown(Board,Position, List1, List) :- Position >= 64, reverse(List,List1), !.
+subrowDown(Board,Position,List, AList) :- P1 is Position+8, element(Position,Element,Board), subrowDown(Board,P1,List,[Element|AList]).
+
 
 % -----
 % nextMove(X,Player,Move).
