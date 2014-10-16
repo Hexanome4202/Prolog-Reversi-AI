@@ -1,8 +1,10 @@
 % utilities
 % element -> return value at Pos
-element(P, X, L) :- element(P,1,X,L).
-element(P,P,X,[X|L]).
-element(P,CP,X,[_|L]) :- NP is CP + 1, element(P,NP,X,L).
+%element(P, X, L) :- element(P,1,X,L).
+%element(P,P,X,[X|L]).
+%element(P,CP,X,[_|L]) :- NP is CP + 1, element(P,NP,X,L).
+
+element(P,X,L) :- nth1(P,L,X).
 
 % sublist -> creates a sublist of the list
 sublist(List,Position,Size,Res) :- sublist(List,Position,Size,Res,[]).
@@ -36,7 +38,7 @@ sublineLeft(Board,Position,List, AList, Modulo) :- P1 is Position-1, M1 is P1 mo
 
 % -----
 % subrowUp(Board,Position,List).
-%	Computes the left subline
+%	Computes the subrow above
 %	Parameters :
 %		Board 		-> the game Board
 %		Position 	-> the sub starting position
@@ -47,7 +49,7 @@ subrowUp(Board,Position,List, AList) :- P1 is Position-8, element(Position,Eleme
 
 % -----
 % subrowDown(Board,Position,List).
-%	Computes the left subline
+%	Computes the subrow below
 %	Parameters :
 %		Board 		-> the game Board
 %		Position 	-> the sub starting position
@@ -55,6 +57,61 @@ subrowUp(Board,Position,List, AList) :- P1 is Position-8, element(Position,Eleme
 subrowDown(Board,Position, List) :- P1 is Position+8, subrowDown(Board,P1,List,[]).
 subrowDown(Board,Position, List1, List) :- Position >= 64, reverse(List,List1), !.
 subrowDown(Board,Position,List, AList) :- P1 is Position+8, element(Position,Element,Board), subrowDown(Board,P1,List,[Element|AList]).
+
+% -----
+% subdiagUpLeft(Board,Position,List).
+%	Computes the left-up sub diagonal
+%	Parameters :
+%		Board 		-> the game Board
+%		Position 	-> the sub starting position
+%		List 		-> the resulting subline
+subdiagUpLeft(Board,Position, List) :- P1 is Position-9, Modulo is Position mod 8, ModuloNext is P1 mod 8, subdiagUpLeft(Board,P1,List,[],Modulo,ModuloNext).
+subdiagUpLeft(Board,Position, List1, List, M, M1) :- Position =< 0, reverse(List,List1), !.
+subdiagUpLeft(Board,Position, List1, List, M, M1) :- M =\= M1+1, M=\=0, reverse(List,List1), !.
+subdiagUpLeft(Board,Position, List1, List, M, M1) :- M1 == 0, reverse(List,List1), !.
+subdiagUpLeft(Board,Position,List, AList, M, M1) :- M3 is M1, P1 is Position-9, M4 is P1 mod 8, element(Position,Element,Board), subdiagUpLeft(Board,P1,List,[Element|AList],M3,M4).
+
+% -----
+% subdiagDownLeft(Board,Position,List).
+%	Computes the left-down sub diagonal
+%	Parameters :
+%		Board 		-> the game Board
+%		Position 	-> the sub starting position
+%		List 		-> the resulting subline
+subdiagDownLeft(Board,Position, List) :- P1 is Position+7, Modulo is Position mod 8, ModuloNext is P1 mod 8, subdiagDownLeft(Board,P1,List,[],Modulo,ModuloNext).
+subdiagDownLeft(Board,Position, List1, List, M, M1) :- Position >= 64, reverse(List,List1), !.
+subdiagDownLeft(Board,Position, List1, List, M, M1) :- M1 =\= M-1, M=\=0, reverse(List,List1), !.
+subdiagDownLeft(Board,Position, List1, List, M, M1) :- M1 == 0, reverse(List,List1), !.
+subdiagDownLeft(Board,Position,List, AList, M, M1) :- M3 is M1, P1 is Position+7, M4 is P1 mod 8, element(Position,Element,Board), subdiagDownLeft(Board,P1,List,[Element|AList],M3,M4).
+
+
+% -----
+% subdiagUpRight(Board,Position,List).
+%	Computes the right-up sub diagonal
+%	Parameters :
+%		Board 		-> the game Board
+%		Position 	-> the sub starting position
+%		List 		-> the resulting subline
+subdiagUpRight(Board,Position, List) :- P1 is Position-7, Modulo is Position mod 8, ModuloNext is P1 mod 8, subdiagUpRight(Board,P1,List,[],Modulo,ModuloNext).
+subdiagUpRight(Board,Position, List1, List, M, M1) :- Position =< 0, reverse(List,List1), !.
+subdiagUpRight(Board,Position, List1, List, M, M1) :- M =\= M1-1, M1=\=0, reverse(List,List1), !.
+subdiagUpRight(Board,Position, List1, List, M, M1) :- M1 == 1, reverse(List,List1), !.
+subdiagUpRight(Board,Position,List, AList, M, M1) :- M3 is M1, P1 is Position-7, M4 is P1 mod 8, element(Position,Element,Board), subdiagUpRight(Board,P1,List,[Element|AList],M3,M4).
+
+
+% -----
+% subdiagDownRight(Board,Position,List).
+%	Computes the right-down sub diagonal
+%	Parameters :
+%		Board 		-> the game Board
+%		Position 	-> the sub starting position
+%		List 		-> the resulting subline
+subdiagDownRight((Board,Position, List) :- P1 is Position-7, Modulo is Position mod 8, ModuloNext is P1 mod 8, subdiagDownRight((Board,P1,List,[],Modulo,ModuloNext).
+subdiagDownRight((Board,Position, List1, List, M, M1) :- Position =< 0, reverse(List,List1), !.
+subdiagDownRight((Board,Position, List1, List, M, M1) :- M =\= M1-1, M1=\=0, reverse(List,List1), !.
+subdiagDownRight((Board,Position, List1, List, M, M1) :- M1 == 1, reverse(List,List1), !.
+subdiagDownRight((Board,Position,List, AList, M, M1) :- M3 is M1, P1 is Position-7, M4 is P1 mod 8, element(Position,Element,Board), subdiagDownRight((Board,P1,List,[Element|AList],M3,M4).
+
 
 
 % -----
