@@ -132,7 +132,7 @@ nextMove(X,2,Move) :- possibleMoves(X,2,Moves), ia2(X,Moves,Move).
 %		Player 	-> the number of the player
 %		Moves 	-> all the possible moves
 
-possibleMoves(X,Player,Moves) :- possibleMoves(X,Player,Moves,[],1).r,R,R,Pos) :- element(Pos,N,X), N == 0, nextPlayer(Player,NextPlayer), line(X,Player,Pos,NB), column(X,Player,Pos,NB), diag(X,Player,Pos,NB).
+possibleMoves(X,Player,Moves) :- possibleMoves(X,Player,Moves,[],1).
 possibleMoves(_,_,R,R,65).
 possibleMoves(X,Player,R,R,Pos) :- element(Pos,N,X), N == 0, nextPlayer(Player,NextPlayer), line(X,Player,Pos,NB), column(X,Player,Pos,NB), diag(X,Player,Pos,NB).
 

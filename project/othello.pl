@@ -3,7 +3,7 @@
 :- include('match.pl').
 
 play(_,Winner) :-  win(Winner),!.
-play(Player,_) :- board(X), nextMove(X,Player,Move), update(X,Player,Move,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer).
+play(Player,Winner) :- board(X), nextMove(X,Player,Move), update(X,Player,Move,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer, Winner).
 
 % nextPlayer(Player, NewPlayer) -> 1 gives 2, 2 gives 1.
 nextPlayer(Player,NewPlayer) :- P1 is Player+1, pow(-1,P1,X), NewPlayer is Player+X.
