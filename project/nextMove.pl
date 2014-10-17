@@ -107,7 +107,7 @@ subdiagUpRight(Board,Position,List, AList, _, M1) :- M3 is M1, P1 is Position-7,
 %		Position 	-> the sub starting position
 %		List 		-> the resulting subline
 subdiagDownRight(Board,Position, List) :- P1 is Position+9, Modulo is Position mod 8, ModuloNext is P1 mod 8, subdiagDownRight(Board,P1,List,[],Modulo,ModuloNext).
-subdiagDownRight(_,Position, List1, List, _, _) :- Position > 24, reverse(List,List1), !.
+subdiagDownRight(_,Position, List1, List, _, _) :- Position > 64, reverse(List,List1), !.
 subdiagDownRight(_,_, List1, List, M, M1) :- M =\= M1-1, M1=\=0, reverse(List,List1), !.
 subdiagDownRight(_,_, List1, List, _, M1) :- M1 == 1, reverse(List,List1), !.
 subdiagDownRight(Board,Position,List, AList, _, M1) :- M3 is M1, P1 is Position+9, M4 is P1 mod 8, element(Position,Element,Board), subdiagDownRight(Board,P1,List,[Element|AList],M3,M4).
@@ -149,3 +149,7 @@ possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N == 0, nextPlayer(Pla
 line(Board,Player,Pos,Points) :- 	sublineLeft(Board,Pos,SubLeft), match(SubLeft,Player,PointsLeft), 
 									sublineRight(Board,Pos,SubRight), match(SubRight,Player,PointsRight),
 									Points is PointsLeft + PointsRight.
+
+column(Board,Player,Position,Points) :- subrowUp(Board,Position,SubList1), match(SubList1, Player, Points1), 
+										subrowDown(Board,Position,SubList2), match(SubList2,Player,Points2), 
+										Points is Points1+Points2.
