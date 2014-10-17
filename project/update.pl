@@ -22,6 +22,10 @@ updateUpperLine(Board, Position, Player, NewBoard) :- subrowUp(Board, Position, 
 updateBelowLine(Board, Position, Player, Board) :- subrowDown(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateBelowLine(Board, Position, Player, NewBoard) :- subrowDown(Board, Position, List), match(List, Player, Points), Points > 0, changeBelowLine(Board, Position, Player, NewBoard).
 
+%Updates pieces on up left diagonal
+updateUpLeftDiag(Board, Position, Player, Board) :- subdiagUpLeft(Board, Position, List), match(List, Player, Points), Points == 0, !.
+updateUpLeftDiag(Board, Position, Player, NewBoard) :- subdiagUpLeft(Board, Position, List), match(List, Player, Points), Points > 0, changeUpLeftDiag(Board, Position, Player, NewBoard).
+
 % -----
 % changeLeftLine(Board,Position,Player, NewBoard).
 %	Turns the pieces on the left subline
@@ -54,3 +58,15 @@ changeUpperLine(Board,Position, Player, NewBoard) :- P1 is Position-8, update(Bo
 changeBelowLine(Board,Position,_, Board) :- Position >= 64, !.
 changeBelowLine(Board,Position,Player, Board) :- nth1(Position,Board,X), X==Player, !.
 changeBelowLine(Board,Position, Player, NewBoard) :- P1 is Position+8, update(Board, Player, Position, TempBoard), changeBelowLine(TempBoard,P1, Player, NewBoard).
+
+
+% -----
+% changeUpLeftDiag(Board,Position,Player, NewBoard).
+%	Turns the pieces on the subline below
+changeUpLeftDiag(Board,Position,_, Board) :- Position =< 0, !.
+changeUpLeftDiag(Board,Position,Player, Board) :- nth1(Position,Board,X), X==Player, !.
+changeUpLeftDiag(Board,Position, Player, NewBoard) :- Mod is Position mod 8, Mod == 1, update(Board, Player, Position, TempBoard), NewBoard is TempBoard, !.
+changeUpLeftDiag(Board,Position, Player, NewBoard) :- P1 is Position-9, update(Board, Player, Position, TempBoard), changeUpLeftDiag(TempBoard,P1, Player, NewBoard).
+
+
+
