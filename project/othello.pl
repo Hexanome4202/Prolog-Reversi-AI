@@ -2,8 +2,8 @@
 :- include('nextMove.pl').
 :- include('match.pl').
 
-play(Player,Winner) :-  win(Winner),!.
-play(Player,Winner) :- board(X), nextMove(X,Player,Move), update(X,Player,Move,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer).
+play(_,Winner) :-  win(Winner),!.
+play(Player,_) :- board(X), nextMove(X,Player,Move), update(X,Player,Move,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer).
 
 % nextPlayer(Player, NewPlayer) -> 1 gives 2, 2 gives 1.
 nextPlayer(Player,NewPlayer) :- P1 is Player+1, pow(-1,P1,X), NewPlayer is Player+X.
@@ -24,7 +24,7 @@ win(Winner) :- possibleMoves1(X), X = [], possibleMoves2(Y), Y = [], board(Board
 
 % count(Element, List, Counter) 
 count(Element, List, Counter) :- count(Element, List, Counter, 0).
-count(Element, [], Counter, Counter).
+count(_, [], Counter, Counter).
 count(Element, [Head|Tail], Counter, ACounter) :- (Element = Head -> C1 is ACounter+1 ; C1 is ACounter), count(Element,Tail,Counter,C1).
 
 %Test de subline avec match 
