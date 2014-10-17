@@ -140,4 +140,6 @@ possibleMoves(X,Player,R,R,Pos) :- element(Pos,N,X), N == 0, nextPlayer(Player,N
 
 column(Board,Player,Position,Points) :- subrowUp(Board,Position,SubList1), match(SubList1, Player, Points1), subrowDown(Board,Position,SubList2), match(SubList2,Player,Points2), Points is Points1+Points2.
 
+diag(Board,Player,Position,Points) :- subdiagDownRight(Board,Position,SubList1), subdiagDownLeft(Board,Position,SubList2), subdiagUpRight(Board,Position,SubList3), subdiagUpLeft(Board,Position,SubList4), match(SubList1,Player,Points1), match(SubList2,Player,Points2), match(SubList3,Player,Points3),match(SubList4,Player,Points4), Points is Points1+Points2+Points3+Points4.
+
 % backwardLine(X,Player,Pos,R,NB).
