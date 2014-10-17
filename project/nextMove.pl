@@ -133,8 +133,7 @@ nextMove(X,2,Move) :- possibleMoves(X,2,Moves), ia2(X,Moves,Move).
 %		Moves 	-> all the possible moves
 possibleMoves(X,Player,Moves) :- possibleMoves(X,Player,Moves,[],1).
 possibleMoves(X,Player,R,R,65).
-% /!\ Uncomment when subfunctions done
-% possibleMoves(X,Player,R,R,Pos) :- element(Pos,N,X), N == 0, nextPlayer(Player,NextPlayer), line(X,Player,Pos,NB), column(X,Player,Pos,NB), diag(X,Player,Pos,NB).
+possibleMoves(X,Player,R,R,Pos) :- element(Pos,N,X), N == 0, nextPlayer(Player,NextPlayer), line(X,Player,Pos,NB), column(X,Player,Pos,NB), diag(X,Player,Pos,NB).
 
 % line(X,Player,Pos,NB) :- backwardLine(X,Player,Pos, NB, 0), forwardLine(), NB is NB1 + NB2.
 
