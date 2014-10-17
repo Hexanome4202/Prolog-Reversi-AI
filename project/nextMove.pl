@@ -131,11 +131,21 @@ nextMove(X,2,Move) :- possibleMoves(X,2,Moves), ia2(X,Moves,Move).
 %		X 		-> the game Board
 %		Player 	-> the number of the player
 %		Moves 	-> all the possible moves
-
 possibleMoves(X,Player,Moves) :- possibleMoves(X,Player,Moves,[],1).
 possibleMoves(_,_,R,R,65).
-possibleMoves(X,Player,R,R,Pos) :- element(Pos,N,X), N == 0, nextPlayer(Player,NextPlayer), line(X,Player,Pos,NB), column(X,Player,Pos,NB), diag(X,Player,Pos,NB).
+possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N == 0, nextPlayer(Player,NextPlayer), line(X,Player,Pos,LinePoints), 
+										column(X,Player,Pos,ColPoints), diag(X,Player,Pos,DiagPoints), 
+										Points is LinePoints + ColPoints + DiagPoints, append(R,[Pos,Points],R),
+										Pos1 is Pos + 1, possibleMoves(X,Player,Moves,R,Pos1).
 
-% line(X,Player,Pos,NB) :- backwardLine(X,Player,Pos, NB, 0), forwardLine(), NB is NB1 + NB2.
-
-% backwardLine(X,Player,Pos,R,NB).
+% -----
+% line(Board,Player,Pos,Points).
+%	Return points earned by adding a token at position Pos
+%	Parameters :
+%		Board 	-> the game Board
+%		Player 	-> the number of the player
+%		Pos 	-> position concerned
+%		Points 	-> Points earned by the checked move
+line(Board,Player,Pos,Points) :- 	sublineLeft(Board,Pos,SubLeft), match(SubLeft,Player,PointsLeft), 
+									sublineRight(Board,Pos,SubRight), match(SubRight,Player,PointsRight),
+									Points is PointsLeft + PointsRight.
