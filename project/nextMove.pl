@@ -131,12 +131,13 @@ nextMove(X,2,Move) :- possibleMoves(X,2,Moves), ia2(X,Moves,Move).
 %		X 		-> the game Board
 %		Player 	-> the number of the player
 %		Moves 	-> all the possible moves
-possibleMoves(X,Player,Moves) :- possibleMoves(X,Player,Moves,[],1).
+possibleMoves(X,Player,Moves) :- possibleMoves(X,Player,Moves,[],1), !.
 possibleMoves(_,_,R,R,65).
-possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N == 0, nextPlayer(Player,NextPlayer), line(X,Player,Pos,LinePoints), 
+possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N =\= 0, Pos1 is Pos + 1, possibleMoves(X,Player,Moves,R,Pos1).
+possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N == 0, line(X,Player,Pos,LinePoints), 
 										column(X,Player,Pos,ColPoints), diag(X,Player,Pos,DiagPoints), 
-										Points is LinePoints + ColPoints + DiagPoints, append(R,[Pos,Points],R),
-										Pos1 is Pos + 1, possibleMoves(X,Player,Moves,R,Pos1).
+										Points is LinePoints + ColPoints + DiagPoints, (Points =\= 0 -> append(R,[[Pos,Points]],Concat) ; append(R,[],Concat)),
+										Pos1 is Pos + 1, possibleMoves(X,Player,Moves,Concat,Pos1).
 
 diag(Board,Player,Position,Points) :- subdiagDownRight(Board,Position,SubList1), subdiagDownLeft(Board,Position,SubList2), 
 										subdiagUpRight(Board,Position,SubList3), subdiagUpLeft(Board,Position,SubList4),
