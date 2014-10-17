@@ -10,8 +10,8 @@ board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1
 % IAs
 %	Moves: all possible moves
 %	Move: The chosen one
-ia1(X,Moves,Move) :- random(Moves,Move).
-ia2(X,Moves,Move) :- random(Moves,Move).
+ia1(_,Moves,Move) :- random(Moves,Move).
+ia2(_,Moves,Move) :- random(Moves,Move).
 
 % Possible moves
 :- dynamic possibleMoves1/1.
