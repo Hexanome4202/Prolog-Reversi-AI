@@ -121,8 +121,8 @@ subdiagDownRight(Board,Position,List, AList, _, M1) :- M3 is M1, P1 is Position+
 %		X 		-> the game Board
 %		Player 	-> the number of the player
 %		Move 	-> the chosen move to perform
-nextMove(X,1,Move) :- possibleMoves(X,1,Moves), retract(possibleMoves1(_)), assert(possibleMoves1(Moves)), ia1(X,Moves,Move).
-nextMove(X,2,Move) :- possibleMoves(X,2,Moves), retract(possibleMoves2(_)), assert(possibleMoves2(Moves)), ia2(X,Moves,Move).
+nextMove(X,1,Move) :- possibleMoves(X,1,Moves), retract(possibleMoves1(_)), assert(possibleMoves1(Moves)), (Moves = [] -> 0==0 ; ia1(X,Moves,Move)).
+nextMove(X,2,Move) :- possibleMoves(X,2,Moves), retract(possibleMoves2(_)), assert(possibleMoves2(Moves)), (Moves = [] -> 0==0 ; ia2(X,Moves,Move)).
 
 % -----
 % possibleMoves(X,Player,Moves).

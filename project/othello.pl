@@ -9,7 +9,7 @@ board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1
 
 play(Winner) :- retract(board(_)), assert(board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])), retract(possibleMoves1(_)), assert(possibleMoves1(1)), play(1,Winner),!.
 play(_,Winner) :- win(Winner),!.
-play(Player,Winner) :- board(X), displayBoard(X), nextMove(X,Player,Move), update(X,Player,Move,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer, Winner).
+play(Player,Winner) :- board(X), displayBoard(X), nextMove(X,Player,Move), updateAll(X,Move,Player,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer, Winner).
 
 % nextPlayer(Player, NewPlayer) -> 1 gives 2, 2 gives 1.
 nextPlayer(Player,NewPlayer) :- P1 is Player+1, pow(-1,P1,X), NewPlayer is Player+X.
