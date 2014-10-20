@@ -26,6 +26,10 @@ sizeOfList([_|T],N) :- sizeOfList(T,N1), N is N1+1.
 randomIA([],-1).
 randomIA(PossibleMoves, Move) :- sizeOfList(PossibleMoves, Size), Position is random(Size)+1, elementAt(MoveList,PossibleMoves,Position), elementAt(Move,MoveList,1).
 
+bestCurrentMoveIA([X|PossibleMoves], Move) :- element(1,First,X), element(2,Second,X), bestMove(PossibleMoves,Move,Second,First).
+bestMove([],Current,_,Current).
+bestMove([X|PossibleMoves],Move,CurrentMax,Current) :- element(1,First,X), element(2,Second,X), (Second > CurrentMax -> CurrMax is Second, Curr is First; CurrMax is CurrentMax, Curr is Current), bestMove(PossibleMoves,Move,CurrMax,Curr).
+
 % win -> conditions to win
 win(Winner) :- possibleMoves1(X), X = [], possibleMoves2(Y), Y = [], board(Board), count(1,Board, C1), count(2,Board,C2), (C1 > C2 -> Winner is 1; (C2 > C1 -> Winner is 2 ; Winner is 0)), !.
 

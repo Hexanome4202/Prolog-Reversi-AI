@@ -8,7 +8,7 @@
 % IAs
 %	Moves: all possible moves
 %	Move: The chosen one
-ia1(_,Moves,Move) :- randomIA(Moves,Move).
+ia1(_,Moves,Move) :- bestCurrentMoveIA(Moves,Move).
 ia2(_,Moves,Move) :- randomIA(Moves,Move).
 
 % Possible moves
