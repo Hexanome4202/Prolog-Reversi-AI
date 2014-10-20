@@ -139,13 +139,21 @@ possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N == 0, line(X,Player,
 										Points is LinePoints + ColPoints + DiagPoints, (Points =\= 0 -> append(R,[[Pos,Points]],Concat) ; append(R,[],Concat)),
 										Pos1 is Pos + 1, possibleMoves(X,Player,Moves,Concat,Pos1).
 
+% -----
+% diag(Board,Player,Position,Points).
+%	Computes points earned in diag if we play at the current position
+%	Parameters :
+%		Board 		-> the game Board
+%		Player 		-> the number of the player
+%		Position 	-> the current position
+%		Points 		-> points earned for the move
 diag(Board,Player,Position,Points) :- subdiagDownRight(Board,Position,SubList1), subdiagDownLeft(Board,Position,SubList2), 
 										subdiagUpRight(Board,Position,SubList3), subdiagUpLeft(Board,Position,SubList4),
 										match(SubList1,Player,Points1), match(SubList2,Player,Points2), match(SubList3,Player,Points3),
 										match(SubList4,Player,Points4), Points is Points1+Points2+Points3+Points4.
 
 % line(Board,Player,Pos,Points).
-%	Return points earned by adding a token at position Pos
+%	Return points earned in line by adding a token at position Pos
 %	Parameters :
 %		Board 	-> the game Board
 %		Player 	-> the number of the player
@@ -155,6 +163,14 @@ line(Board,Player,Pos,Points) :- 	sublineLeft(Board,Pos,SubLeft), match(SubLeft,
 									sublineRight(Board,Pos,SubRight), match(SubRight,Player,PointsRight),
 									Points is PointsLeft + PointsRight.
 
+% -----
+% column(Board,Player,Position,Points).
+%	Computes points earned in column by adding a token at position Position
+%	Parameters :
+%		Board 		-> the game Board
+%		Player 		-> the number of the player
+%		Position 	-> the current position
+%		Points 		-> points earned for the move
 column(Board,Player,Position,Points) :- subrowUp(Board,Position,SubList1), match(SubList1, Player, Points1), 
 										subrowDown(Board,Position,SubList2), match(SubList2,Player,Points2), 
 										Points is Points1+Points2.
