@@ -4,6 +4,7 @@
 :- include('match.pl').
 :- include('update.pl').
 :- include('display.pl').
+:- include('minmax.pl').
 
 play(Winner) :- retract(board(_)), assert(board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])), retract(possibleMoves1(_)), assert(possibleMoves1(1)), play(1,Winner),!.
 play(_,Winner) :- win(Winner),!.
