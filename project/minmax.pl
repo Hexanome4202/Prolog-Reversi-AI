@@ -1,31 +1,41 @@
-minmax(Depth,Player,Board,PossibleMoves,FinalMove) :- minmax(Depth,Player,Board,PossibleMoves,max, [], FinalMove).
-minmax(0,_,_,[],_,ListScore,FinalMove).
-minmax(0,_,_,[Move|RestPoss],_,ListScore,FinalMove) :- append(ListScore,Move,NewList), minmax(0,_,_,ResPoss,_,NewList,FinalMove).
 
 
------------------------------------------------------------
+minmax(Depth, Player, PossibleMoves, MoveToPlay) :- 
+	Depth > 0, 
+	board(Board), 
+	minmax(Depth,Board,Player, max, PossibleMoves, [-1,-999999], Result),
+	element(1,X,Result),
+	MoveToPlay is X.
 
-minmax(Depth, PossibleMoves, Move, Player, Board) :- minmax(Depth, PossibleMoves, Move, -1,max, Player, Board, 0).
-minmax(0,[X|_],Move,Move,_,_,_,Score) :- element(2,CurrentScore,X), Score is CurrentScore.
-minmax(_,[],Move,Move,_,_,_,0).
-minmax(Depth, [X|RestPlusAnonyme], Move, Result, max, Player, Board, Score) :- NewDepth is Depth-1, 
-	element(1,NewMove,X), 
-	updateAll(Board,NewMove,Player,NewBoard), 
+minmax(0,_,_,_,Move,_,_,Move).
+
+minmax(_,_,_,_,Move,[],_,Move).
+
+minmax(Depth, Board, Player, max, [NewMove|PossibleMoves], Val, Result) :- 
+	NewDepth is Depth-1, 
+	nextPlayer(Player,NewPlayer),
+	element(1,PositionNewMove,NewMove),
+	updateAll(Board,PositionNewMove,NewPlayer,NewBoard), 
+	possibleMoves(NewBoard, NewPlayer,NewPossibleMoves),
+	minmax(NewDepth, NewBoard, NewPlayer, min, NewMove, NewPossibleMoves, [-1,999999], NewResult),
+	max(Val,NewResult, MaxResult),
+	minmax(Depth, Board, Player, max, PossibleMoves, MaxResult, Result).
+
+minmax(Depth, Board, Player, min, [NewMove|PossibleMoves], Val, Result) :- 
+	NewDepth is Depth-1, 
 	nextPlayer(Player,NewPlayer), 
-	possibleMoves(NewBoard,NewPlayer,NewPossibleMoves), 
-	minmax(NewDepth, NewPossibleMoves, Move, Result, min, NewPlayer, NewBoard, Score2),
-	element(2,Score3,X),
-	Score4 is Score,
-	Score = Score2+Score3,
-	minmax(Depth, RestPlusAnonyme, Move, Result, max, Player, Board, Score4).
-														
-minmax(Depth, [X|RestPlusAnonyme], Move, Result, min, Player, Board, Score) :- NewDepth is Depth-1, 
-	element(1,NewMove,X), 
-	updateAll(Board,NewMove,Player,NewBoard), 
-	nextPlayer(Player,NewPlayer), 
-	possibleMoves(NewBoard,NewPlayer,NewPossibleMoves), 
-	minmax(NewDepth, NewPossibleMoves, Move, Result, max, NewPlayer, NewBoard, Score2),
-	element(2,Score3,X),
-	Score4 is Score,
-	Score = Score2+Score3,
-	minmax(Depth, RestPlusAnonyme, Move, Result, min, Player, Board, Score4).
+	updateAll(Board,NewMove,NewPlayer,NewBoard), 
+	possibleMoves(NewBoard, NewPlayer,NewPossibleMoves),
+	minmax(NewDepth, NewBoard, NewPlayer, max, NewMove, NewPossibleMoves, [-1,-999999], NewResult),
+	min(Val,NewResult, MinResult),
+	minmax(Depth, Board, Player, max, PossibleMoves, MinResult, Result).
+
+max(Val1,Val2,Res) :- 
+	element(2,X,Val1), 
+	element(2,Y,Val2), 
+	(X > Y -> Res is Val1 ; Res is Val2).
+
+min(Val1,Val2,Res) :- 
+	element(2,X,Val1), 
+	element(2,Y,Val2), 
+	(X < Y -> Res is Val1 ; Res is Val2).
