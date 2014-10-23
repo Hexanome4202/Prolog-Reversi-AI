@@ -5,13 +5,15 @@
 :- dynamic board/1.
 board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).
 
+% ----
 % IAs
 %	Moves: all possible moves
 %	Move: The chosen one
 ia1(_,Moves,Move) :- minmaxAlphaBetaIA(3, 1,Moves,Move).
 ia2(_,Moves,Move) :- bestPositionIA(Moves,Move).
 
-% Possible moves
+% ----
+% Possible moves for players 1 and 2
 :- dynamic possibleMoves1/1.
 possibleMoves1([[21,1],[30,1],[35,1],[44,1]]).
 :- dynamic possibleMoves2/1.

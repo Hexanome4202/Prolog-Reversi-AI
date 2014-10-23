@@ -16,6 +16,7 @@ sublineRight(Board,Position, List) :- Modulo is Position mod 8, sublineRight(Boa
 sublineRight(_,_, List1, List, 0) :- reverse(List,List1), !.
 sublineRight(Board,Position,List, AList, _) :- P1 is Position+1, M1 is P1 mod 8, element(P1,Element,Board), sublineRight(Board,P1,List,[Element|AList],M1).
 
+
 % -----
 % sublineLeft(Board,Position,List).
 %	Computes the left subline
@@ -39,6 +40,7 @@ subrowUp(Board,Position, List) :- P1 is Position-8, subrowUp(Board,P1,List,[]).
 subrowUp(_,Position, List1, List) :- Position =< 0, reverse(List,List1), !.
 subrowUp(Board,Position,List, AList) :- P1 is Position-8, element(Position,Element,Board), subrowUp(Board,P1,List,[Element|AList]).
 
+
 % -----
 % subrowDown(Board,Position,List).
 %	Computes the subrow below
@@ -49,6 +51,7 @@ subrowUp(Board,Position,List, AList) :- P1 is Position-8, element(Position,Eleme
 subrowDown(Board,Position, List) :- P1 is Position+8, subrowDown(Board,P1,List,[]).
 subrowDown(_,Position, List1, List) :- Position >= 64, reverse(List,List1), !.
 subrowDown(Board,Position,List, AList) :- P1 is Position+8, element(Position,Element,Board), subrowDown(Board,P1,List,[Element|AList]).
+
 
 % -----
 % subdiagUpLeft(Board,Position,List).
@@ -62,6 +65,7 @@ subdiagUpLeft(_,Position, List1, List, _, _) :- Position =< 0, reverse(List,List
 subdiagUpLeft(_,_, List1, List, M, M1) :- M =\= M1+1, M=\=0, reverse(List,List1), !.
 subdiagUpLeft(_,_, List1, List, _, M1) :- M1 == 0, reverse(List,List1), !.
 subdiagUpLeft(Board,Position,List, AList, _, M1) :- M3 is M1, P1 is Position-9, M4 is P1 mod 8, element(Position,Element,Board), subdiagUpLeft(Board,P1,List,[Element|AList],M3,M4).
+
 
 % -----
 % subdiagDownLeft(Board,Position,List).
@@ -98,12 +102,34 @@ subdiagUpRight(Board,Position,List, AList, _, M1) :- M3 is M1, P1 is Position-7,
 %		Board 		-> the game Board
 %		Position 	-> the sub starting position
 %		List 		-> the resulting subline
-subdiagDownRight(Board,Position, List) :- P1 is Position+9, Modulo is Position mod 8, ModuloNext is P1 mod 8, subdiagDownRight(Board,P1,List,[],Modulo,ModuloNext).
-subdiagDownRight(_,Position, List1, List, _, _) :- Position > 64, reverse(List,List1), !.
-subdiagDownRight(_,_, List1, List, M, M1) :- M =\= M1-1, M1=\=0, reverse(List,List1), !.
-subdiagDownRight(_,_, List1, List, _, M1) :- M1 == 1, reverse(List,List1), !.
-subdiagDownRight(Board,Position,List, AList, _, M1) :- M3 is M1, P1 is Position+9, M4 is P1 mod 8, element(Position,Element,Board), subdiagDownRight(Board,P1,List,[Element|AList],M3,M4).
+subdiagDownRight(Board,Position, List) :- 
+	P1 is Position+9, 
+	Modulo is Position mod 8, 
+	ModuloNext is P1 mod 8, 
+	subdiagDownRight(Board,P1,List,[],Modulo,ModuloNext).
 
+subdiagDownRight(_,Position, List1, List, _, _) :- 
+	Position > 64, 
+	reverse(List,List1), 
+	!.
+
+subdiagDownRight(_,_, List1, List, M, M1) :-
+	M =\= M1-1, 
+	M1=\=0, 
+	reverse(List,List1), 
+	!.
+
+subdiagDownRight(_,_, List1, List, _, M1) :- 
+	M1 == 1, 
+	reverse(List,List1), 
+	!.
+	
+subdiagDownRight(Board,Position,List, AList, _, M1) :- 
+	M3 is M1, 
+	P1 is Position+9, 
+	M4 is P1 mod 8, 
+	element(Position,Element,Board), 
+	subdiagDownRight(Board,P1,List,[Element|AList],M3,M4).
 
 
 % -----
@@ -113,8 +139,17 @@ subdiagDownRight(Board,Position,List, AList, _, M1) :- M3 is M1, P1 is Position+
 %		X 		-> the game Board
 %		Player 	-> the number of the player
 %		Move 	-> the chosen move to perform
-nextMove(X,1,Move) :- possibleMoves(X,1,Moves), retract(possibleMoves1(_)), assert(possibleMoves1(Moves)), (Moves = [] -> 0==0 ; ia1(X,Moves,Move)).
-nextMove(X,2,Move) :- possibleMoves(X,2,Moves), retract(possibleMoves2(_)), assert(possibleMoves2(Moves)), (Moves = [] -> 0==0 ; ia2(X,Moves,Move)).
+nextMove(X,1,Move) :- 
+	possibleMoves(X,1,Moves), 
+	retract(possibleMoves1(_)), 
+	assert(possibleMoves1(Moves)), 
+	(Moves = [] -> 0==0 ; ia1(X,Moves,Move)).
+	
+nextMove(X,2,Move) :- 
+	possibleMoves(X,2,Moves), 
+	retract(possibleMoves2(_)), 
+	assert(possibleMoves2(Moves)), 
+	(Moves = [] -> 0==0 ; ia2(X,Moves,Move)).
 
 % -----
 % possibleMoves(X,Player,Moves).
@@ -124,12 +159,25 @@ nextMove(X,2,Move) :- possibleMoves(X,2,Moves), retract(possibleMoves2(_)), asse
 %		Player 	-> the number of the player
 %		Moves 	-> all the possible moves
 possibleMoves(X,Player,Moves) :- possibleMoves(X,Player,Moves,[],1), !.
+
 possibleMoves(_,_,R,R,65).
-possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N =\= 0, Pos1 is Pos + 1, possibleMoves(X,Player,Moves,R,Pos1).
-possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N == 0, line(X,Player,Pos,LinePoints), 
-										column(X,Player,Pos,ColPoints), diag(X,Player,Pos,DiagPoints), 
-										Points is LinePoints + ColPoints + DiagPoints, (Points =\= 0 -> append(R,[[Pos,Points]],Concat) ; append(R,[],Concat)),
-										Pos1 is Pos + 1, possibleMoves(X,Player,Moves,Concat,Pos1).
+
+possibleMoves(X,Player,Moves,R,Pos) :- 	
+	element(Pos,N,X), 
+	N =\= 0, 
+	Pos1 is Pos + 1, 
+	possibleMoves(X,Player,Moves,R,Pos1).
+	
+possibleMoves(X,Player,Moves,R,Pos) :- 	
+	element(Pos,N,X), N == 0, 
+	line(X,Player,Pos,LinePoints), 
+	column(X,Player,Pos,ColPoints), 
+	diag(X,Player,Pos,DiagPoints), 
+	Points is LinePoints + ColPoints + DiagPoints,
+	(Points =\= 0 -> append(R,[[Pos,Points]],Concat) ; append(R,[],Concat)),
+	Pos1 is Pos + 1, 
+	possibleMoves(X,Player,Moves,Concat,Pos1).
+
 
 % -----
 % diag(Board,Player,Position,Points).
@@ -139,10 +187,16 @@ possibleMoves(X,Player,Moves,R,Pos) :- 	element(Pos,N,X), N == 0, line(X,Player,
 %		Player 		-> the number of the player
 %		Position 	-> the current position
 %		Points 		-> points earned for the move
-diag(Board,Player,Position,Points) :- subdiagDownRight(Board,Position,SubList1), subdiagDownLeft(Board,Position,SubList2), 
-										subdiagUpRight(Board,Position,SubList3), subdiagUpLeft(Board,Position,SubList4),
-										match(SubList1,Player,Points1), match(SubList2,Player,Points2), match(SubList3,Player,Points3),
-										match(SubList4,Player,Points4), Points is Points1+Points2+Points3+Points4.
+diag(Board,Player,Position,Points) :- 
+	subdiagDownRight(Board,Position,SubList1), 
+	subdiagDownLeft(Board,Position,SubList2), 
+	subdiagUpRight(Board,Position,SubList3), 
+	subdiagUpLeft(Board,Position,SubList4),
+	match(SubList1,Player,Points1), 
+	match(SubList2,Player,Points2), 
+	match(SubList3,Player,Points3),
+	match(SubList4,Player,Points4), 
+	Points is Points1+Points2+Points3+Points4.
 
 % line(Board,Player,Pos,Points).
 %	Return points earned in line by adding a token at position Pos
@@ -151,9 +205,12 @@ diag(Board,Player,Position,Points) :- subdiagDownRight(Board,Position,SubList1),
 %		Player 	-> the number of the player
 %		Pos 	-> position concerned
 %		Points 	-> Points earned by the checked move
-line(Board,Player,Pos,Points) :- 	sublineLeft(Board,Pos,SubLeft), match(SubLeft,Player,PointsLeft), 
-									sublineRight(Board,Pos,SubRight), match(SubRight,Player,PointsRight),
-									Points is PointsLeft + PointsRight.
+line(Board,Player,Pos,Points) :- 
+	sublineLeft(Board,Pos,SubLeft), 
+	match(SubLeft,Player,PointsLeft), 
+	sublineRight(Board,Pos,SubRight), 
+	match(SubRight,Player,PointsRight),
+	Points is PointsLeft + PointsRight.
 
 % -----
 % column(Board,Player,Position,Points).
@@ -163,6 +220,9 @@ line(Board,Player,Pos,Points) :- 	sublineLeft(Board,Pos,SubLeft), match(SubLeft,
 %		Player 		-> the number of the player
 %		Position 	-> the current position
 %		Points 		-> points earned for the move
-column(Board,Player,Position,Points) :- subrowUp(Board,Position,SubList1), match(SubList1, Player, Points1), 
-										subrowDown(Board,Position,SubList2), match(SubList2,Player,Points2), 
-										Points is Points1+Points2.
+column(Board,Player,Position,Points) :- 
+	subrowUp(Board,Position,SubList1),
+	match(SubList1, Player, Points1),
+	subrowDown(Board,Position,SubList2),
+	match(SubList2,Player,Points2),
+	Points is Points1+Points2.
