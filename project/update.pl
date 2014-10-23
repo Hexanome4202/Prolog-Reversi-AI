@@ -1,7 +1,15 @@
-%append([ ], L1, L1).
-%append([A|L1],L2,[A|L3]) :- append(L1,L2,L3).
-
 updateAll(Board,-1,_,Board).
+
+% ----
+% updateAll(Board,Move,Player,NewBoard)
+%
+% predicate that updates the board with a move
+%
+%	Parameters :
+%		Board		-> the old board
+%		Move		-> the move that needs to be played
+%		Player		-> the actual player
+%		NewBoard	-> the updated board 
 updateAll(Board,Move,Player,NewBoard) :- updateLeftLine(Board,Move,Player,NewBoard0), update(NewBoard0,0,Move,NewBoard1), 
 										updateRightLine(NewBoard1,Move,Player,NewBoard2), update(NewBoard2,0,Move,NewBoard3), 
 										updateUpperLine(NewBoard3,Move,Player,NewBoard4), update(NewBoard4,0,Move,NewBoard5), 
@@ -11,41 +19,50 @@ updateAll(Board,Move,Player,NewBoard) :- updateLeftLine(Board,Move,Player,NewBoa
 										updateUpLeftDiag(NewBoard11,Move,Player,NewBoard12), update(NewBoard12,0,Move,NewBoard13), 
 										updateUpRightDiag(NewBoard13,Move,Player,NewBoard14), update(NewBoard14,Player,Move,NewBoard), !.
 
-% Replaces the piece at Position by a Players piece
+% ----
 % update(Board, Player, Position, NewBoard)
+% Replaces the piece at Position by a Players piece
 update(Board,_,-1, Board).
 update([_|Y],Player,1, [Player|Y] ).
 update([X|Y], Player, Move, NewBoard) :- NewMove is Move-1, update(Y, Player, NewMove, Test), append([X], Test, NewBoard).
 
-%Updates pieces on left line
+% ----
+% Updates pieces on left line
 updateLeftLine(Board, Position, Player, Board) :- sublineLeft(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateLeftLine(Board, Position, Player, NewBoard) :- sublineLeft(Board, Position, List), match(List, Player, Points), Points > 0, changeLeftLine(Board, Position, Player, NewBoard).
 
-%Updates pieces on right line
+% ----
+% Updates pieces on right line
 updateRightLine(Board, Position, Player, Board) :- sublineRight(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateRightLine(Board, Position, Player, NewBoard) :- sublineRight(Board, Position, List), match(List, Player, Points), Points > 0, changeRightLine(Board, Position, Player, NewBoard).
 
-%Updates pieces on above line
+% ----
+% Updates pieces on above line
 updateUpperLine(Board, Position, Player, Board) :- subrowUp(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateUpperLine(Board, Position, Player, NewBoard) :- subrowUp(Board, Position, List), match(List, Player, Points), Points > 0, changeUpperLine(Board, Position, Player, NewBoard).
 
-%Updates pieces on below line
+% ----
+% Updates pieces on below line
 updateBelowLine(Board, Position, Player, Board) :- subrowDown(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateBelowLine(Board, Position, Player, NewBoard) :- subrowDown(Board, Position, List), match(List, Player, Points), Points > 0, changeBelowLine(Board, Position, Player, NewBoard).
 
-%Updates pieces on up left diagonal
+% ----
+% Updates pieces on up left diagonal
 updateUpLeftDiag(Board, Position, Player, Board) :- subdiagUpLeft(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateUpLeftDiag(Board, Position, Player, NewBoard) :- subdiagUpLeft(Board, Position, List), match(List, Player, Points), Points > 0, changeUpLeftDiag(Board, Position, Player, NewBoard).
 
-%Updates pieces on up right diagonal
+% ----
+% Updates pieces on up right diagonal
 updateUpRightDiag(Board, Position, Player, Board) :- subdiagUpRight(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateUpRightDiag(Board, Position, Player, NewBoard) :- subdiagUpRight(Board, Position, List), match(List, Player, Points), Points > 0, changeUpRightDiag(Board, Position, Player, NewBoard).
 
-%Updates pieces on down right diagonal
+% ----
+% Updates pieces on down right diagonal
 updateDownRightDiag(Board, Position, Player, Board) :- subdiagDownRight(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateDownRightDiag(Board, Position, Player, NewBoard) :- subdiagDownRight(Board, Position, List), match(List, Player, Points), Points > 0, changeDownRightDiag(Board, Position, Player, NewBoard).
 
-%Updates pieces on down left diagonal
+% ----
+% Updates pieces on down left diagonal
 updateDownLeftDiag(Board, Position, Player, Board) :- subdiagDownLeft(Board, Position, List), match(List, Player, Points), Points == 0, !.
 updateDownLeftDiag(Board, Position, Player, NewBoard) :- subdiagDownLeft(Board, Position, List), match(List, Player, Points), Points > 0, changeDownLeftDiag(Board, Position, Player, NewBoard).
 
