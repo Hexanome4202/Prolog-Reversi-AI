@@ -13,25 +13,25 @@
 % if winner = 0 -> nobody wins
 % if winner = 1 -> player 1 wins
 % if winner = 2 -> player 2 wins
-play(Winner) :- 
+play(Winner, Ia1, Ia2) :- 
 	retract(board(_)), 
 	assert(board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])), 
 	retract(possibleMoves1(_)), 
 	assert(possibleMoves1(1)), 
-	play(1,Winner),!.
+	play(1,Winner, Ia1, Ia2),!.
 	
-play(_,Winner) :- win(Winner),!.
+play(_,Winner, _, _) :- win(Winner),!.
 
-play(Player,Winner) :- 
+play(Player,Winner, Ia1, Ia2) :- 
 	board(X), 
 	displayBoard(X),
 	%get_single_char(_),
-	nextMove(X,Player,Move), 
+	nextMove(X,Player,Move, Ia1, Ia2), 
 	updateAll(X,Move,Player,NewBoard), 
 	retract(board(X)), 
 	assert(board(NewBoard)), 
 	nextPlayer(Player,NewPlayer), 
-	play(NewPlayer, Winner).
+	play(NewPlayer, Winner, Ia1, Ia2).
 
 % nextPlayer(Player, NewPlayer) -> 1 gives 2, 2 gives 1.
 nextPlayer(Player,NewPlayer) :- 

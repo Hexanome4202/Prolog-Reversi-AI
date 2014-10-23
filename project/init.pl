@@ -12,7 +12,7 @@ board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1
 ia1(Moves,Move) :- minmaxAlphaBetaIA(3, 1,Moves,Move).
 ia2(Moves,Move) :- bestPositionIA(Moves,Move).
 
-ia(_,Moves,Move, 1) :- minmaxAlphaBetaIA(3, Player,Moves,Move).
+ia(Player,Moves,Move, 1) :- minmaxAlphaBetaIA(3, Player,Moves,Move).
 ia(_,Moves,Move, 2) :- bestPositionIA(Moves,Move).
 ia(_,Moves,Move, 3) :- randomIA(Moves,Move).
 ia(Player,Moves,Move, 4) :- minmaxIA(3,Player,Moves,Move).
