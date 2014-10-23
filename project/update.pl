@@ -64,7 +64,7 @@ changeLeftLine(Board,Position, Player, NewBoard) :- P1 is Position-1, update(Boa
 % -----
 % changeRightLine(Board,Position,Player, NewBoard).
 %	Turns the pieces on the right subline
-changeRightLine(Board,Position,_, Board) :- Modulo is Position mod 8, Modulo == 1, !.
+changeRightLine(Board,Position,_, Board) :- Modulo is Position mod 8, Modulo == 0, !.
 changeRightLine(Board,Position,Player, Board) :- nth1(Position,Board,X), X==Player, !.
 changeRightLine(Board,Position, Player, NewBoard) :- P1 is Position+1, update(Board, Player, Position, TempBoard), changeRightLine(TempBoard,P1, Player, NewBoard),!.
 
