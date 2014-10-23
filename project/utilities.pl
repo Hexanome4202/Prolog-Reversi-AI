@@ -1,6 +1,4 @@
-% elementAt(Element, List, Position)
-elementAt(X,[X|_],1).
-elementAt(X,[_|T],N) :- N > 1, N1 is N-1, elementAt(X,T,N1).
+element(Position,X,List) :- nth1(Position,List,X).
 
 % sizeOfList(List,Size)
 sizeOfList([],0).

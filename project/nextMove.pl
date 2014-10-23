@@ -1,11 +1,3 @@
-% utilities
-% element -> return value at Pos
-%element(P, X, L) :- element(P,1,X,L).
-%element(P,P,X,[X|L]).
-%element(P,CP,X,[_|L]) :- NP is CP + 1, element(P,NP,X,L).
-
-element(P,X,L) :- nth1(P,L,X).
-
 % sublist -> creates a sublist of the list
 sublist(List,Position,Size,Res) :- sublist(List,Position,Size,Res,[]).
 sublist(_,1,0,NewList,NewList).
