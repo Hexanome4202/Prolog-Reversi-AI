@@ -8,8 +8,8 @@ board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1
 % IAs
 %	Moves: all possible moves
 %	Move: The chosen one
-ia1(_,Moves,Move) :- minmaxIA(3, 1,Moves,Move).
-ia2(_,Moves,Move) :- randomIA(Moves,Move).
+ia1(_,Moves,Move) :- minmaxAlphaBetaIA(3, 1,Moves,Move).
+ia2(_,Moves,Move) :- bestPositionIA(Moves,Move).
 
 % Possible moves
 :- dynamic possibleMoves1/1.

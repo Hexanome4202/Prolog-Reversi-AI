@@ -5,6 +5,7 @@
 :- include('update.pl').
 :- include('display.pl').
 :- include('minmax.pl').
+:- include('borders.pl').
 
 % ----
 % launch the game and gives a winner
