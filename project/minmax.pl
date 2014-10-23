@@ -44,6 +44,21 @@ minmax(ConstantDepth, Depth, Board, Player, min, CurrentMove, [NewMove|PossibleM
 	minmax(ConstantDepth, NewDepth, NewBoard, NewPlayer, max, NewMove, NewPossibleMoves, [-1,-999999], NewResult),
 	min(Val,NewResult, MinResult),
 	minmax(ConstantDepth, Depth, Board, Player, min, CurrentMove, PossibleMoves, MinResult, Result).
+
+minmaxAlphaBetaIA(Depth,Player,PossibleMoves,Move) :- 
+	((Player == 1 -> possibleMoves2([]) ; possibleMoves1([])) -> bestCurrentMoveIA(PossibleMoves,Move); minmaxAlphaBeta(Depth,Player,PossibleMoves,Move)).
+	
+minmaxAlphaBeta(Depth, Player, PossibleMoves, MoveToPlay) :-
+	board(Board), 
+	minmaxAlphaBeta(Depth,Depth,Board,Player, max, -99999,[-1,0], PossibleMoves, [-1,-999999], Result),
+	element(1,X,Result),
+	MoveToPlay is X.
+	
+minmaxAlphaBeta(_,0,_,_,_,_,Move,_,_,Move) :- !.
+
+minmaxAlphaBeta(Depth,Depth,_,_,_,_,_,[],Move,Move) :- !.
+
+minmaxAlphaBeta(_,_,_,_,_,_,[Move,_],[],[_,Points],[Move,Points]) :- !.
 	
 minmaxAlphaBeta(ConstantDepth, Depth, Board, Player, max, AlphaBeta, CurrentMove, [NewMove|PossibleMoves], Val, Result) :-
 	!,
@@ -55,7 +70,8 @@ minmaxAlphaBeta(ConstantDepth, Depth, Board, Player, max, AlphaBeta, CurrentMove
 	element(2,NewAlphaBeta,Val),
 	minmaxAlphaBeta(ConstantDepth, NewDepth, NewBoard, NewPlayer, min, NewAlphaBeta, NewMove, NewPossibleMoves, [-1,999999], NewResult),
 	max(Val,NewResult, MaxResult),
-	(AlphaBeta > MaxResult -> minmaxAlphaBeta(ConstantDepth, Depth, Board, Player, max, AlphaBeta,CurrentMove, PossibleMoves, MaxResult, Result) ; minmaxAlphaBeta(ConstantDept,Depth,Board,Player,max,AlphaBeta,CurrentMove,[],MaxResult,Result)).
+	element(2,PossibleAlphaBeta,MaxResult),
+	(AlphaBeta > PossibleAlphaBeta -> minmaxAlphaBeta(ConstantDepth, Depth, Board, Player, max, AlphaBeta,CurrentMove, PossibleMoves, MaxResult, Result) ; minmaxAlphaBeta(ConstantDept,Depth,Board,Player,max,AlphaBeta,CurrentMove,[],MaxResult,Result)).
 	
 minmaxAlphaBeta(ConstantDepth, Depth, Board, Player, min, AlphaBeta, CurrentMove, [NewMove|PossibleMoves], Val, Result) :-
 	!,
@@ -67,4 +83,5 @@ minmaxAlphaBeta(ConstantDepth, Depth, Board, Player, min, AlphaBeta, CurrentMove
 	element(2,NewAlphaBeta,Val),
 	minmaxAlphaBeta(ConstantDepth, NewDepth, NewBoard, NewPlayer, max, NewAlphaBeta, NewMove, NewPossibleMoves, [-1,-999999], NewResult),
 	min(Val,NewResult, MinResult),
-	(AlphaBeta < MinResult -> minmaxAlphaBeta(ConstantDepth, Depth, Board, Player, min, AlphaBeta, CurrentMove, PossibleMoves, MinResult, Result) ; minmaxAlphaBeta(ConstantDept,Depth,Board,Player,min,AlphaBeta,CurrentMove,[],MinResult,Result)).
+	element(2,PossibleAlphaBeta,MinResult),
+	(AlphaBeta < PossibleAlphaBeta -> minmaxAlphaBeta(ConstantDepth, Depth, Board, Player, min, AlphaBeta, CurrentMove, PossibleMoves, MinResult, Result) ; minmaxAlphaBeta(ConstantDept,Depth,Board,Player,min,AlphaBeta,CurrentMove,[],MinResult,Result)).
