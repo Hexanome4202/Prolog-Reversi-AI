@@ -9,8 +9,10 @@ board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1
 % IAs
 %	Moves: all possible moves
 %	Move: The chosen one
-ia1(_,Moves,Move) :- minmaxAlphaBetaIA(3, 1,Moves,Move).
-ia2(_,Moves,Move) :- bestPositionIA(Moves,Move).
+ia(Player,Moves,Move, 1) :- minmaxAlphaBetaIA(5, Player,Moves,Move).
+ia(_,Moves,Move, 2) :- bestPositionIA(Moves,Move).
+ia(_,Moves,Move, 3) :- randomIA(Moves,Move).
+ia(Player,Moves,Move, 4) :- minmaxIA(3,Player,Moves,Move).
 
 % ----
 % Possible moves for players 1 and 2

@@ -1,4 +1,4 @@
-%Gets how many points are got with the given sublist
+% Gets how many points the player will get based on the given List 
 match(List, Player, Points) :- match(List, Player, 0, Points).
 
 match([],  _, TempPoints, Points) :- Points is TempPoints ,!.
