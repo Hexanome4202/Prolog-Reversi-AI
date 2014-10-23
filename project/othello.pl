@@ -5,10 +5,11 @@
 :- include('update.pl').
 :- include('display.pl').
 :- include('minmax.pl').
+:- include('borders.pl').
 
 play(Winner) :- retract(board(_)), assert(board([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])), retract(possibleMoves1(_)), assert(possibleMoves1(1)), play(1,Winner),!.
 play(_,Winner) :- win(Winner),!.
-play(Player,Winner) :- board(X), displayBoard(X), get_single_char(_), nextMove(X,Player,Move), updateAll(X,Move,Player,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer, Winner).
+play(Player,Winner) :- board(X), displayBoard(X), nextMove(X,Player,Move), updateAll(X,Move,Player,NewBoard), retract(board(X)), assert(board(NewBoard)), nextPlayer(Player,NewPlayer), play(NewPlayer, Winner).
 
 
 % nextPlayer(Player, NewPlayer) -> 1 gives 2, 2 gives 1.
