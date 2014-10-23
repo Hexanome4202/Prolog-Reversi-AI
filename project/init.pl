@@ -13,6 +13,7 @@ ia(Player,Moves,Move, 1) :- minmaxAlphaBetaIA(5, Player,Moves,Move).
 ia(_,Moves,Move, 2) :- bestPositionIA(Moves,Move).
 ia(_,Moves,Move, 3) :- randomIA(Moves,Move).
 ia(Player,Moves,Move, 4) :- minmaxIA(3,Player,Moves,Move).
+ia(Player,Moves,Move, 5) :- bestCurrentMoveIA(Moves, Move).
 
 % ----
 % Possible moves for players 1 and 2
