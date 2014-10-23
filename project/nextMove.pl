@@ -143,13 +143,13 @@ nextMove(X,1,Move) :-
 	possibleMoves(X,1,Moves), 
 	retract(possibleMoves1(_)), 
 	assert(possibleMoves1(Moves)), 
-	(Moves = [] -> 0==0 ; ia1(X,Moves,Move)).
+	(Moves = [] -> 0==0 ; ia1(Moves,Move)).
 	
 nextMove(X,2,Move) :- 
 	possibleMoves(X,2,Moves), 
 	retract(possibleMoves2(_)), 
 	assert(possibleMoves2(Moves)), 
-	(Moves = [] -> 0==0 ; ia2(X,Moves,Move)).
+	(Moves = [] -> 0==0 ; ia2(Moves,Move)).
 
 % -----
 % possibleMoves(X,Player,Moves).
