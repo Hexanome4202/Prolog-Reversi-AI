@@ -6,6 +6,7 @@
 :- include('display.pl').
 :- include('minmax.pl').
 :- include('borders.pl').
+:- include('stats.pl').
 
 % ----
 % launch the game and gives a winner
@@ -24,7 +25,7 @@ play(_,Winner) :- win(Winner),!.
 play(Player,Winner) :- 
 	board(X), 
 	displayBoard(X),
-	get_single_char(_),
+	%get_single_char(_),
 	nextMove(X,Player,Move), 
 	updateAll(X,Move,Player,NewBoard), 
 	retract(board(X)), 
