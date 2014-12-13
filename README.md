@@ -5,3 +5,7 @@ One is for our course-work project and the other ones (those called with our nam
 
 ## Project
 The aim of the project is to develop a simple Reversi game with its own AI.
+
+## Screencast
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=onhLN998ULg
+" target="_blank">YouTube video</a>
