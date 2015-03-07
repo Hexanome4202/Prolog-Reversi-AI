@@ -1,4 +1,4 @@
-tp-prolog-1
+Prolog Reversi AI's
 ===========
 This repository is composed of several folders.
 One is for our course-work project and the other ones (those called with our names) are composed of training prolog exercises.
